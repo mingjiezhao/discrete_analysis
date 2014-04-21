@@ -1,0 +1,15 @@
+### Problem 2  ###
+data_wafer = read.table("wafer.txt")
+fit_wafer = glm(data_wafer, family=poisson(link=log))
+summary(fit_wafer)
+fit_wafer$fitted
+
+
+### Problem 3  ###
+Y = c(4,1,7,9)
+expo = c(1259,2082,1417,1647)
+age = c(1,1,0,0)
+type = c(1,0,1,0)
+X = cbind(intercept=1, age=age, type=type, age_type=age*type)
+fitmodel = poisson.regression(X,Y,offset=log(exposure))
+poisson.print(fitmodel)

@@ -1,0 +1,21 @@
+/*heart-valve example on Poisson regression */
+/* re: Lesson 7*/
+options nocenter nodate nonumber linesize=72; 
+
+data heart; 
+input age $ type $ exposure y; 
+o=log(exposure); 
+cards; 
+Under55 Aortic 1259 4
+Under55 Mitral 2082 1
+55+ Aortic 1417 7
+55+ Mitral 1647 9
+; 
+run;
+proc print data=heart;
+run;
+/*saturated poisson regression with offset*/
+proc genmod data=heart order=data; 
+class age type; 
+model y = age type age*type / dist=poisson link=log offset=o lrci; 
+run; 

@@ -1,0 +1,159 @@
+##Problem 1##
+data1 = read.table("Montana.txt",header=T)
+model.hom=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Pol+Sex*Stat+Inc*Pol+Inc*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.hom)
+
+model.drop1=glm(Freq~Sex+Inc+Pol+Stat+Sex*Pol+Sex*Stat+Inc*Pol+Inc*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop1)
+
+mode2.drop2=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Stat+Inc*Pol+Inc*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop2)
+
+model.drop3=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Pol+Inc*Pol+Inc*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop3)
+
+model.drop4=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Pol+Sex*Stat+Inc*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop4)
+
+model.drop5=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Pol+Sex*Stat+Inc*Pol+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop5)
+
+model.drop6=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Pol+Sex*Stat+Inc*Pol+Inc*Stat,family=poisson(link=log),data=data1)
+summary(model.drop6)
+
+model.drop51=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Stat+Inc*Pol+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop51)
+
+model.drop511=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Sex*Stat+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.drop511)
+
+model.fin=glm(Freq~Sex+Inc+Pol+Stat+Sex*Inc+Pol*Stat,family=poisson(link=log),data=data1)
+summary(model.fin)
+1-pchisq(34,25)
+
+
+##Problem 2 -- by Minchen Wei, additionally revised by Sesa##
+#part a#
+X=factor(c(rep("x1",6),rep("x2",6),rep("x3",6)))
+Y=factor(c(rep(c("y1","y1","y2","y2","y3","y3"),3)))
+Z=factor(c(rep(c("z1","z2"),9)))
+count=c(125,5,7,106,11,18,124,3,6,109,22,9,146,2,6,111,0,0)
+count=count+0.5
+table=xtabs(count~X+Y+Z)
+model=glm(count~X+Y+Z,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y+X*Z,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y+X*Z+Y*Z,family=poisson(link=log))
+summary(model)
+
+count=c(125,5,7,106,11,18,124,3,6,109,22,9,146,2,6,111,0.0000001,0.0000001)
+
+count=count+0.5
+model=glm(count~X+Y+Z,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y+X*Z,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y,family=poisson(link=log))
+summary(model)
+model=glm(count~X+Y+Z+X*Y+X*Z+Y*Z,family=poisson(link=log))
+summary(model)
+
+#part b#
+X=factor(c(rep("x1",6),rep("x2",6),rep("x3",6)))
+Y=factor(c(rep(c("y1","y1","y2","y2","y3","y3"),3)))
+Z=factor(c(rep(c("z1","z2"),9)))
+count=c(125,5,7,106,11,18,124,3,6,109,22,9,146,2,6,111,0,0)
+model=glm(count~X+Y+Z+X*Y+X*Z+Y*Z,family=poisson(link=log))
+summary(model)
+
+delta1=c(rep(0,16),1,0)
+delta2=c(rep(0,16),0,1)
+model=glm(count~X+Y+Z+X*Y+X*Z+Y*Z+delta1+delta2,family=poisson(link=log))
+summary(model)
+
+count=c(125,5,7,106,11,18,124,3,6,109,22,9,146,2,6,111,NA,NA)
+model=glm(count~X+Y+Z+X*Y+X*Z+Y*Z,family=poisson(link=log))
+summary(model)
+1-pchisq(4.897,3)
+
+
+##Problem 3  -- by Minchen Wei##
+Carrier=rep(c("yes","no"),c(3,3))
+Tonsile=rep(c("Normal","Slightly Enlarged","Very Enlarged"),2)
+Carrier=factor(Carrier)
+Tonsile=factor(Tonsile)
+count=c(19,29,24,497,560,269)
+xCarrier=rep(c(1,2),c(3,3))
+yTonsile=rep(1:3,2)
+table=xtabs(count~Carrier+Tonsile)
+model=glm(count~Carrier+Tonsile+xCarrier*yTonsile,family=poisson(link=log))
+summary(model)
+
+
+
+##Problem 4##
+R04=rep(c("N","M","S","W"),c(4,4,4,4))
+R16=rep(c("N","M","S","W"),4)
+count=c(425,17,80,36,10,555,74,47,7,34,771,33,5,14,29,452)
+R04=factor(R04)
+R16=factor(R16)
+
+# Create indicator variables for each diagonal cell
+iN=(R04=="N")*(R16=="N")
+iM=(R04=="M")*(R16=="M")
+iS=(R04=="S")*(R16=="S")
+iW=(R04=="W")*(R16=="W")
+R04_N=(R04=="N")
+R04_M=(R04=="M")
+R04_S=(R04=="S")
+R04_W=(R04=="W")
+R16_N=(R16=="N")
+R16_M=(R16=="M")
+R16_S=(R16=="S")
+R16_W=(R16=="W")
+symm1=1*(R04=="N")*(R16=="N")
+symm2=2*(R04=="M")*(R16=="M")
+symm3=3*(R04=="S")*(R16=="S")
+symm4=4*(R04=="W")*(R16=="W")
+symm5=5*(R04=="N")*(R16=="M")+5*(R16=="N")*(R04=="M")
+symm6=6*(R04=="N")*(R16=="S")+6*(R16=="N")*(R04=="S")
+symm7=7*(R04=="N")*(R16=="W")+7*(R16=="N")*(R04=="W")
+symm8=8*(R04=="M")*(R16=="S")+8*(R16=="M")*(R04=="S")
+symm9=9*(R04=="M")*(R16=="W")+9*(R16=="W")*(R04=="M")
+symm10=10*(R04=="S")*(R16=="W")+10*(R16=="S")*(R04=="W")
+
+# Contigency Table
+table=xtabs(count~R04+R16)
+Contingency_Table=list(Frequency=table,Percent=prop.table(table),RowPct=prop.table(table,1),ColPct=prop.table(table,2))
+Contingency_Table
+result=chisq.test(table,correct=FALSE)
+
+# Simple Kappa Coefficient
+# Using a function Kappa() in package vcd.
+# Please first load packages VR, colorspace and grid and finally load vcd.
+library(vcd)
+kappa=Kappa(table)
+kappa
+
+options(contrast=c("contr.treatment","contr.poly"))
+# Independence Model
+model=glm(count~R04+R16,family=poisson(link=log))
+summary(model)
+
+# Quasi-Independence Model
+model=glm(count~R04+R16+iN+iM+iS+iW,family=poisson(link=log))
+summary(model)
+
+# Symmetry Model
+model=glm(count~symm1+symm4+symm6+symm2+symm5+symm3+symm7+symm8+symm9+symm10,family=poisson(link=log))
+summary(model)
+
+# Quasi-Symmetry Model
+model=glm(count~R04_N+R04_M+R04_S+R04_W+R16_N+R16_S+R16_W+R16_M+
+symm1+symm4+symm6+symm2+symm5+symm3+symm7+symm8+symm9+symm10,family=poisson(link=log))
+summary(model)
+
+
